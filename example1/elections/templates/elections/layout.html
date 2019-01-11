@@ -1,7 +1,10 @@
 <!-- C\Code\mysite\elections\templates\elections\index.html -->
+{% load staticfiles %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="shortcut icon" type="image/x-icon" href="{% static 'elections/favicon.ico' %}" />
   <title>{% block title %}{% endblock %}</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,7 +22,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-item nav-link active" href="/">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link active" href="{% url 'elections:home' %}">Home <span class="sr-only">(current)</span></a>
             <a class="nav-item nav-link" href="/candidate">Candidate</a>
           </div>
         </div>
