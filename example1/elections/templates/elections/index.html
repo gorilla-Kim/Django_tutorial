@@ -1,8 +1,52 @@
 <!-- C\Code\mysite\elections\templates\elections\index.html -->
 {% extends "elections/layout.html" %}
 {% block title %}
-메인페이지
+    메인페이지
 {% endblock %}
 
 {% block content %}
+    <form action="{% url 'elections:create_candidate' %}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="exampleFormControlInput1">Name</label>
+            <input
+                type="text"
+                class="form-control"
+                id="exampleFormControlInput1"
+                placeholder="홍길동"
+                name="name">
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1">Introduction</label>
+            <textarea
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                rows="3"
+                name="introduction"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlInput2">area</label>
+            <input
+                type="text"
+                class="form-control"
+                id="exampleFormControlInput2"
+                placeholder="한국"
+                name="area">
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlInput3">party_number</label>
+            <input
+                type="number"
+                class="form-control"
+                id="exampleFormControlInput3"
+                placeholder="1"
+                name="party_number">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    {% if msg %}
+    <div class="alert alert-primary" role="alert">
+        {{msg}}
+    </div>
+    {% endif %}
 {% endblock %}

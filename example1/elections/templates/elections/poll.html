@@ -1,0 +1,41 @@
+{% extends 'elections/layout.html' %}
+{% block title %}
+    선거기간 설정하기
+{% endblock %}
+
+{% block content %}
+    <form action="{% url 'elections:create_poll' %}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="exampleFormControlInput1">start_date</label>
+            <input
+                type="date"
+                class="form-control"
+                id="exampleFormControlInput1"
+                name="start_date">
+        </div>
+        <div class="form-group">
+                <label for="exampleFormControlInput2">end_date</label>
+                <input
+                    type="date"
+                    class="form-control"
+                    id="exampleFormControlInput2"
+                    name="end_date">
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlInput2">area</label>
+            <input
+                type="text"
+                class="form-control"
+                id="exampleFormControlInput2"
+                placeholder="한국"
+                name="area">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    {% if msg %}
+    <div class="alert alert-primary" role="alert">
+        {{msg|linebreaksbr}}
+    </div>
+    {% endif %}
+{% endblock %}

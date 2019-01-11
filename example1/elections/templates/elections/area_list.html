@@ -1,10 +1,10 @@
 {% extends "elections/layout.html" %}
 {% block title %}
-    {{ area }}
+    {{ area }}_list
 {% endblock %}
 
 {% block content %}
-    {% if poll %}
+    {% if polls %}
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -14,34 +14,29 @@
                 </tr>
                 <tr>
                     <td>
-                        <b>이름</b>
+                        <b>시작기간</b>
                     </td>
                     <td>
-                        <b>소개</b>
+                        <b>종료기간</b>
                     </td>
                     <td>
-                        <b>기호</b>
-                    </td>
-                    <td>
-                        <b>지지하기</b>
+                        <b>투표로이동</b>
                     </td>
                 </tr>
             </thead>
             <tbody>
-                {% for candidate in candidates %}
+                {% for poll in polls %}
                     <tr>
                         <td>
-                            {{candidate.name}}</td>
+                            {{poll.start_date}}</td>
                         <td>
-                            {{candidate.introduction}}
+                            {{poll.end_date}}
                         </td>
                         <td>
-                            기호{{candidate.party_number}}번
-                        </td>
-                        <td>
-                            <form action="/candidate/polls/{{poll.id}}/" method="post">
+                            <form action="{% url 'elections:show_poll' %}" method="post">
                                 {% csrf_token %}
-                                <button name="choice" value="{{candidate.id}}">선택</button>
+                                <input type="hidden" name="area" value="{{area}}">
+                                <button name="poll_id" value="{{poll.id}}">{{poll.id}}선택</button>
                             </form>
                         </td>
                     </tr>
@@ -49,12 +44,12 @@
             </tbody>
         </table>
     {% else %}
-        여론조사가 없습니다.
+        1여론조사가 없습니다.
     {% endif %}
 
     {% if msg %}
         <div class="alert alert-primary" role="alert">
-            {{msg|linebreaksbr}}
+            {{msg}}
         </div>
     {% endif %}
 

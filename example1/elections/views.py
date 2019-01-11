@@ -19,20 +19,20 @@ def candidate(request):
 def areas(request, area):
     today = datetime.datetime.now()
     try:
-        poll = Poll.objects.get(area = area, start_date__lte = today, end_date__gte = today)
-        candidates = Candidate.objects.filter(area = area)
+        polls = Poll.objects.filter(area = area)
+        print(polls)
     except:
-        poll = None
-        candidates = None
+        polls = None
 
-    context = {'poll': poll, 'candidates': candidates, 'area': area}
+    context = {'polls': polls, 'area': area}
 
-    return render(request, 'elections/area.html', context)
+    return render(request, 'elections/area_list.html', context)
 
 def polls(request, poll_id):
     poll = Poll.objects.get(pk = poll_id)
     selection = request.POST['choice']
-
+    print("*******")
+    print(Poll.id)
     try:
         choice = Choice.objects.get(poll_id = poll_id, candidate_id = selection)
         choice.votes += 1
@@ -52,7 +52,7 @@ def results(request, area):
         result['start_date'] = poll.start_date
         result['end_date'] = poll.end_date
         total_votes = Choice.objects.filter(poll_id = poll.id).aggregate(Sum('votes'))
-        result['total_votes'] = float(total_votes['votes__sum'])
+        result['total_votes'] = total_votes['votes__sum']
         rates = []
         for candidate in candidates:
             try:
@@ -66,3 +66,74 @@ def results(request, area):
     
     context = {'candidates': candidates, 'area': area, 'poll_result': poll_result}
     return render(request, 'elections/result.html', context)
+
+def create_candidate(request):
+    name = request.POST.get("name")
+    area = request.POST.get("area")
+    introduction = request.POST.get("introduction")
+    party_number = request.POST.get("party_number")
+    try:
+        candidates = Candidate.objects.filter(
+            party_number = party_number,
+            area = area
+            )
+        print(candidates)
+        msg = "이미 있는 투표번호 입니다."
+        for candidate in candidates:
+            if candidate.name == name:
+                msg = "이미 있는 후보자 입니다." 
+        context = {'msg': msg}
+        return render(request, 'elections/index.html', context)
+    except:
+        candidate = Candidate(
+            name = name,
+            introduction = introduction,
+            area = area,
+            party_number = party_number
+        )
+        candidate.save()
+        msg = "{}가 바르게 생성되었습니다.".format(candidate.name)
+        context = {'msg': msg}
+
+    return render(request, 'elections/index.html', context)
+
+def form_poll(request):
+    return render(request, 'elections/poll.html')
+
+def create_poll(request):
+    start_date = request.POST.get("start_date")
+    end_date = request.POST.get("end_date")
+    area = request.POST.get("area")
+    candidates = Candidate.objects.filter(area = area)
+    try:
+        poll = Poll.objects.get(area = area, start_date__lte = start_date, end_date__gte = start_date)
+        msg = "이미 진행중인 투표가 있습니다. \n{}\n~\n{}".format(poll.start_date, poll.end_date)
+        context = {'msg': msg}
+        return render(request, 'elections/poll.html', context)
+    except:
+        poll = Poll(
+            start_date = start_date,
+            end_date = end_date,
+            area = area
+        )
+        poll.save()
+        msg = "{}지역 새로운 투표가 생성되었습니다.".format(poll.area)
+        context = {'msg': msg, 'poll': poll, 'candidates': candidates, 'area': area }
+
+    return render(request, 'elections/area.html', context)
+
+def show_poll(request):
+    today = datetime.datetime.now()
+    poll_id = request.POST.get('poll_id')
+    area = request.POST.get("area")
+    try:
+        poll = Poll.objects.get(id = poll_id)
+        print("show poll\n")
+        print(poll)
+        candidates = Candidate.objects.filter(area = area)
+    except:
+        poll = None
+        candidates = None
+    msg = "{} \n {}".format(poll.start_date, poll.end_date)
+    context = {'poll': poll, 'candidates': candidates, 'area': area, 'msg': msg}
+    return render(request, 'elections/area.html', context)
