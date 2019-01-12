@@ -72,16 +72,31 @@ def create_candidate(request):
     area = request.POST.get("area")
     introduction = request.POST.get("introduction")
     party_number = request.POST.get("party_number")
+    msg="null"
+    err=""
     try:
         candidates = Candidate.objects.filter(
-            party_number = party_number,
             area = area
             )
-        print(candidates)
-        msg = "이미 있는 투표번호 입니다."
+        #해당 지역에 candidate가 없을때
+        if candidates.count() == 0:
+            err = "값이 비어있습니다."
+            #강제로 에러코드 발생
+            4/0
+        #해당 지역에 같은후보번호 혹은 이름을 가진 후보자가 있는지 검출 
         for candidate in candidates:
+            if candidate.party_number == int(party_number):
+                msg = "이미 있는 후보번호 입니다."
+                err = "이미 있는 후보번호"
             if candidate.name == name:
-                msg = "이미 있는 후보자 입니다." 
+                msg = "이미 있는 후보자 입니다."
+                err = "이미 있는 후보자" 
+        #candidate생성으로 이동
+        if msg == "null":
+            #강제로 에러코드 발생
+            4/0
+        print("error :", err)
+        print("************************\n")
         context = {'msg': msg}
         return render(request, 'elections/index.html', context)
     except:
@@ -92,9 +107,12 @@ def create_candidate(request):
             party_number = party_number
         )
         candidate.save()
+        print("'",candidate,"' 가 바르게 생성되었습니다.")
+        print("************************\n")
         msg = "{}가 바르게 생성되었습니다.".format(candidate.name)
         context = {'msg': msg}
-
+    
+    print("error :", err)
     return render(request, 'elections/index.html', context)
 
 def form_poll(request):
