@@ -1,0 +1,13 @@
+{% extends "wordcount/layout.html" %}
+
+{% block title %}메인{% endblock %}
+
+{% block content %}
+<form action="{% url 'result' %}" method="get">
+    <div class="form-group">
+        <label for="exampleFormControlTextarea1"><h1>Count text!!</h1></label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="10" name="text"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}

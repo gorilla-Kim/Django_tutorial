@@ -1,0 +1,25 @@
+{% extends "wordcount/layout.html" %}
+
+{% block title %}result{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+    <h1 class="display-4">Text analysis!</h1>
+    <p class="lead">Your text consist of <b>{{total}}</b> words!</p>
+    <hr class="my-4">
+        <h3>Your text</h3>
+        <div class="card">
+            <div class="card-body">
+                {{text}}
+            </div>
+        </div>
+        <h3>Word count</h3>
+        <div class="card">
+            <div class="card-body">
+                {% for word, howmany in dictionary %}
+                <h3><span class="badge badge-primary">{{word}} : {{howmany}}</span></h3>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
