@@ -21,7 +21,7 @@ def result(request):
         else:
             # add to dictionary
             word_dictionary[word]=1
-
+    print(word_dictionary)
     # make queryset
     context = {'text': text, 'words': words, 'total': len(words), 'dictionary':word_dictionary.items()}
 
