@@ -1,0 +1,100 @@
+{% extends 'wordcount/layout.html'%}
+
+{% block content %}
+<section class="justify-content-center" id='board'>
+    <div class="container" style="height:27rem; width: 60%;">
+        <table name="titleBar" style="width: 100%;">
+            <td>
+            <div class="card" >
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item bg-light"><h5>Title</h5></li>
+                </ul>
+            </div>
+            </td>
+            <td>
+                <div class="card">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><h5>{{post.summary}}</h5></li>
+                    </ul>
+                </div>
+            </td>
+        </table>
+        <br>
+        <span><b>Created_at :</b> {{post.create_at}} |</span>
+        <div class="card" style="width: 100%;">
+            <div class="card-header" style="word-spacing:40px">
+                <strong>Content</strong>
+            </div>
+            <div class="card-body">
+                <p class="card-text">{{post.content|linebreaks}}</p>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                    update
+                </button>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter2">
+                    delete
+                </button>
+            </div>
+        </div>
+        {% if message %}
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
+        </div>
+        {% endif %}
+    </div>
+</section>
+<!-- Modal1 -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle">Update post</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form method="POST" action="#">
+                {% csrf_token %}
+                <input type="hidden" name="pk" value="{{post.pk}}">
+                <div class="form-group">
+                  <label for="exampleInputPassword1">Password</label>
+                  <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+        </div>
+    </div>
+</div>
+<!-- Modal2 -->
+<div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle">Delete post</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form method="POST" action="#">
+                {% csrf_token %}
+                <input type="hidden" name="pk" value="{{post.pk}}">
+                <div class="form-group">
+                  <label for="exampleInputPassword1">Password</label>
+                  <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
