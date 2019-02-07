@@ -23,4 +23,5 @@ urlpatterns = [
     path('result/', wordcount.views.result, name="result"),
     path('admin/', admin.site.urls),
     path('blog/', include('blog.urls')),
+    path('album/', include('album.urls')),
 ]
