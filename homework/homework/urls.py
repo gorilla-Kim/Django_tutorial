@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 import wordcount.views
+from django.conf import settings
+from django.conf.urls.static import static 
 
 urlpatterns = [
     path('', wordcount.views.home, name="home"),
@@ -24,4 +26,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('blog/', include('blog.urls')),
     path('album/', include('album.urls')),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
