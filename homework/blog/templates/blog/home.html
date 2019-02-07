@@ -1,7 +1,7 @@
 {% extends 'wordcount/layout.html'%}
 
 {% block content %}
-<h1>테스트입니다.</h1>
+<h1>자율게시판입니다.</h1>
 <section id='board'>
     <div class="container" style="height:25rem;">
         <table class="table table-hover" style="height:20rem;">
@@ -22,6 +22,7 @@
                 {% endfor %}
             </tbody>
         </table>
+        <a class="btn btn-primary" href="{% url 'post_create' %}">글쓰기</a>
         {% if message %}
             <div class="alert alert-danger" role="alert">
                 {{ message }}

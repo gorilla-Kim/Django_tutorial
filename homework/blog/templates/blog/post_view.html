@@ -54,9 +54,10 @@
             </button>
         </div>
         <div class="modal-body">
-            <form method="POST" action="#">
+            <form method="POST" action="{% url 'pw_check' %}">
                 {% csrf_token %}
                 <input type="hidden" name="pk" value="{{post.pk}}">
+                <input type="hidden" name="site" value="update">
                 <div class="form-group">
                   <label for="exampleInputPassword1">Password</label>
                   <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
@@ -81,9 +82,10 @@
             </button>
         </div>
         <div class="modal-body">
-            <form method="POST" action="#">
+            <form method="POST" action="{% url 'pw_check' %}">
                 {% csrf_token %}
                 <input type="hidden" name="pk" value="{{post.pk}}">
+                <input type="hidden" name="site" value="delete">
                 <div class="form-group">
                   <label for="exampleInputPassword1">Password</label>
                   <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">

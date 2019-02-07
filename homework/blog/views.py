@@ -1,10 +1,16 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from .models import Post
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
 def home(request):
     message = ""
+    if request.session.get('message', False):
+        message = request.session['message']
+        del request.session['message']
+    print("*********")
+    print(message)
     try:
         #모든 게시글을 기져오기
         posts = Post.objects.all()
@@ -31,3 +37,56 @@ def post_view(request, pk):
         message = "error"
     context = {'post':post, 'message':message}
     return render(request, 'blog/post_view.html', context)
+
+def post_update(request, pk):
+    post = Post.objects.get(pk = pk)
+    try:
+        if request.method == 'POST':
+            post.title = request.POST.get('title')
+            post.content = request.POST.get('content')
+            post.password = request.POST.get('password')
+            post.save()
+            return redirect(reverse('home_blog'))
+    except:
+        request.session['message'] = "Server Error"
+        return redirect(reverse('home_blog'))
+    context = {'post':post}
+    return render(request, 'blog/post_form.html', context)
+
+def pw_check(request):
+    password = request.POST.get('password')
+    pk = request.POST.get('pk')
+    try:
+        post = Post.objects.get(pk = pk) 
+        # 패스워드 불일치 
+        if not (post.password == str(password)):
+            request.session['message'] = "패스워드가 일치하지 않습니다."
+        # 패스워드 일치
+        else:
+            if request.POST.get('site') == "update":
+                print("*******update******")
+                return redirect('post_update', pk)
+            elif request.POST.get('site') == "delete":
+                print("*******delete******")
+                return redirect('post_delete', pk)
+    except:
+        request.session['message'] = "Server Error1"
+        return redirect(reverse('home_blog'))
+    return redirect(reverse('home_blog'))
+
+def post_create(request):
+    if request.method == "POST":
+        post = Post(
+            password = request.POST.get('password'),
+            title = request.POST.get('title'),
+            content = request.POST.get('content')
+        )
+        post.save()
+        return redirect(reverse('home_blog'))
+    context = {}
+    return render(request, 'blog/post_form.html', context)
+
+def post_delete(request, pk):
+    post = Post.objects.get(pk = pk)
+    post.delete()
+    return redirect('home_blog')
