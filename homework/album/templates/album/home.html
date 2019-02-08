@@ -1,7 +1,9 @@
 {% extends 'wordcount/layout.html' %}
 {% load staticfiles %}
 {% block content %}
-<section class="jumbotron text-center" style="height:35rem; background-image: url( '{% static 'logo.jpg' %}' ); background-repeat:no-repeat; background-position:center center;">
+<section
+    class="jumbotron text-center"
+    style="height:35rem; background-image: url( '{% static 'logo.jpg' %}' ); background-repeat:no-repeat; background-position:center center;">
     <div class="container">
         <h1 class="jumbotron-heading">Album example</h1>
         <a href="#album" class="btn btn-primary my-2">go to ALBUM</a>
@@ -12,22 +14,22 @@
     <div class="container">
         <div class="row">
             {% for contact in contacts %}
-            <div class="col-md-4">
-                <div class="card mb-4 shadow-sm">
-                    <img src="{{contact.image.url}}" height="300rem" alt="img">
-                    <div class="card-body">
-                        <b>{{contact.title}}</b>
-                        <p class="card-text">{{contact.summary}}...</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                <div class="col-md-4">
+                    <div class="card mb-4 shadow-sm">
+                        <img src="{{contact.image.url}}" height="300rem" alt="img">
+                        <div class="card-body">
+                            <b>{{contact.title}}</b>
+                            <p class="card-text">{{contact.summary}}...</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                </div>
+                                <small class="text-muted">9 mins</small>
                             </div>
-                            <small class="text-muted">9 mins</small>
                         </div>
                     </div>
                 </div>
-            </div>
             {% endfor %}
         </div>
         <div class="pagination justify-content-center">
@@ -36,11 +38,11 @@
                     <a href="?page=1">&laquo; first</a>
                     <a href="?page={{ contacts.previous_page_number }}">previous</a>
                 {% endif %}
-        
+
                 <span class="current">
-                    Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}.
+                    Page{{ contacts.number }} of {{ contacts.paginator.num_pages }}.
                 </span>
-        
+
                 {% if contacts.has_next %}
                     <a href="?page={{ contacts.next_page_number }}">next</a>
                     <a href="?page={{ contacts.paginator.num_pages }}">last &raquo;</a>
